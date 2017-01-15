@@ -1,0 +1,45 @@
+For N = 4 and C = {1,2,3} there are 4 solutions:
+{1,1,1,1}, {1,1,2}, {2,2}, {1,3}
+
+For N = 10 and C = {2,5,3,6} there are 5 solutions:
+{2,2,2,2,2}, {2,2,3,3}, {2,2,6}, {2,3,5}, {5,5}
+
+Think about the degenerate cases:
+
+How many ways can you give change for 0 cents?
+How many ways can you give change for >0 cents,
+ if you have no coins?
+
+If you are having trouble defining your solutions
+store, then think about it in terms of the
+base case (n=0)
+
+# # Mock out raw_input
+# s = '''10 4
+# 2 5 3 6'''
+# open('input.txt', 'wt').write(s)
+# raw_input = mocked_raw_input('input.txt')
+
+# # Read the inputs
+# n, _ = map(int, raw_input().split())
+# coins = map(int, raw_input().split())
+
+# os.remove('input.txt')
+
+# print n, coins
+
+def get_change(target_value, num_coins, coins=None):
+    if coins is None:
+        coins = [25, 10, 5, 1]
+    if target_value <= 0 or num_coins <= 0:
+        return None
+    if num_coins == 1:
+        if target_value in coins:
+            return {target_value: 1}
+        else:
+            return None
+    for coin in coins:
+        combo = get_change(target_value - coin, num_coins - 1, coins)
+        if combo:
+            combo[coin] = combo.get(coin, 0) + 1
+            return combo
